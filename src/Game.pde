@@ -6,21 +6,50 @@ float tableOffsetY;
 float tableWidth;
 float tableHeight;
 
+int ballRadius;
+
 void setup() {
   size(1080, 720); // screen size
 
-  // Initialize table variables
+  // Initialize constants
   tableOffsetX = 0.1 * width;
   tableOffsetY = 0.1 * height;
   tableWidth = 0.8 * width;
   tableHeight = 0.8 * height;
 
-  // Initialize balls
-  balls = new Ball[10];
-  for (int i = 0; i < 10; ++i)
-    balls[i] = new Ball(i % 2 == 0, new PVector(200 + i * 50, 200  + i * 50));
+  ballRadius = 48;
 
-  // Initialize pockets
+  // Initialize 15 balls
+  balls = new Ball[]{
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth - 2 * ballRadius,
+      tableOffsetY + 0.5 * tableHeight
+    )),
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth - ballRadius,
+      tableOffsetY + 0.5 * tableHeight - 0.5 * ballRadius
+    )),
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth - ballRadius,
+      tableOffsetY + 0.5 * tableHeight + 0.5 * ballRadius
+    )),
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth,
+      tableOffsetY + 0.5 * tableHeight - ballRadius
+    )),
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth,
+      tableOffsetY + 0.5 * tableHeight
+    )),
+    new Ball(true, new PVector(
+      tableOffsetX + 0.75 * tableWidth,
+      tableOffsetY + 0.5 * tableHeight + ballRadius
+    )),
+  };
+  //for (int i = 0; i < 10; ++i)
+  //  balls[i] = new Ball(i % 2 == 0, new PVector(200 + i * 50, 200  + i * 50));
+
+  // Initialize 6 pockets
   pockets = new PVector[]{
     new PVector( // top left
       tableOffsetX,
@@ -69,5 +98,6 @@ void drawTable() {
   noStroke();
   fill(0);
   for (PVector pos : pockets)
-    circle(pos.x, pos.y, 48);
+    circle(pos.x, pos.y, ballRadius);
 }
+
