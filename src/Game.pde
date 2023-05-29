@@ -20,34 +20,25 @@ void setup() {
   ballRadius = 48;
 
   // Initialize 15 balls
-  balls = new Ball[]{
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth - 2 * ballRadius,
-      tableOffsetY + 0.5 * tableHeight
-    )),
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth - ballRadius,
-      tableOffsetY + 0.5 * tableHeight - 0.5 * ballRadius
-    )),
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth - ballRadius,
-      tableOffsetY + 0.5 * tableHeight + 0.5 * ballRadius
-    )),
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth,
-      tableOffsetY + 0.5 * tableHeight - ballRadius
-    )),
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth,
-      tableOffsetY + 0.5 * tableHeight
-    )),
-    new Ball(true, new PVector(
-      tableOffsetX + 0.75 * tableWidth,
-      tableOffsetY + 0.5 * tableHeight + ballRadius
-    )),
-  };
-  //for (int i = 0; i < 10; ++i)
-  //  balls[i] = new Ball(i % 2 == 0, new PVector(200 + i * 50, 200  + i * 50));
+  balls = new Ball[15];
+  int index = 0;
+
+  for (int i = 0; i < 5; ++i) {
+    // the x position is held constant for each column
+    float x = tableOffsetX + 0.75 * tableWidth + (i-2) * ballRadius;
+    // this will be the starting y position of the column
+    float y = tableOffsetY + 0.5 * tableHeight - (i/2) * ballRadius;
+
+    // Adjust starting y position to stagger balls
+    if (i % 2 == 1) y -= 0.5 * ballRadius;
+
+    // Add balls down the column
+    for (int j = 0; j <= i; ++j) {
+      balls[index] = new Ball(true, new PVector(x, y));
+      ++index;
+      y += ballRadius;
+    }
+  }
 
   // Initialize 6 pockets
   pockets = new PVector[]{
@@ -100,4 +91,3 @@ void drawTable() {
   for (PVector pos : pockets)
     circle(pos.x, pos.y, ballRadius);
 }
-
