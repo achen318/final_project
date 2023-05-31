@@ -1,10 +1,9 @@
+Cue cue;
 Ball[] balls;
 PVector[] pockets;
 
-float tableOffsetX;
-float tableOffsetY;
-float tableWidth;
-float tableHeight;
+PVector tableOffset;
+PVector tableDims;
 
 int ballRadius;
 
@@ -12,12 +11,12 @@ void setup() {
   size(1080, 720); // screen size
 
   // Initialize constants
-  tableOffsetX = 0.1 * width;
-  tableOffsetY = 0.1 * height;
-  tableWidth = 0.8 * width;
-  tableHeight = 0.8 * height;
-
+  tableOffset = new PVector(width, height).mult(0.1);
+  tableDims = new PVector(width, height).mult(0.8);
   ballRadius = 48;
+
+  // Initialize cue ball and stick
+  cue = new Cue(tableOffset, tableDims);
 
   // Initialize 15 balls
   balls = new Ball[15];
@@ -25,16 +24,16 @@ void setup() {
 
   for (int i = 0; i < 5; ++i) {
     // the x position is held constant for each column
-    float x = tableOffsetX + 0.75 * tableWidth + (i-2) * ballRadius;
+    float x = tableOffset.x + 0.75 * tableDims.x + (i-2) * ballRadius;
     // this will be the starting y position of the column
-    float y = tableOffsetY + 0.5 * tableHeight - (i/2) * ballRadius;
+    float y = tableOffset.y + 0.5 * tableDims.y - (i/2) * ballRadius;
 
     // Adjust starting y position to stagger balls
     if (i % 2 == 1) y -= 0.5 * ballRadius;
 
     // Add balls down the column
     for (int j = 0; j <= i; ++j) {
-      balls[index] = new Ball(true, new PVector(x, y));
+      balls[index] = new ObjectBall(new PVector(x, y), j % 2 == 0);
       ++index;
       y += ballRadius;
     }
@@ -42,30 +41,12 @@ void setup() {
 
   // Initialize 6 pockets
   pockets = new PVector[]{
-    new PVector( // top left
-      tableOffsetX,
-      tableOffsetY
-    ),
-    new PVector( // top middle
-      tableOffsetX + tableWidth/2,
-      tableOffsetY
-    ),
-    new PVector( // top right
-      tableOffsetX + tableWidth,
-      tableOffsetY
-    ),
-    new PVector( // bottom left
-      tableOffsetX,
-      tableOffsetY + tableHeight
-    ),
-    new PVector( // bottom middle
-      tableOffsetX + tableWidth/2,
-      tableOffsetY + tableHeight
-    ),
-    new PVector( // bottom right
-      tableOffsetX + tableWidth,
-      tableOffsetY + tableHeight
-    )
+    tableOffset.copy(),                                 // top left
+    tableOffset.copy().add(tableDims.x/2, 0),           // top middle
+    tableOffset.copy().add(tableDims.x, 0),             // top right
+    tableOffset.copy().add(0, tableDims.y),             // bottom left
+    tableOffset.copy().add(tableDims.x/2, tableDims.y), // bottom middle
+    tableOffset.copy().add(tableDims)                   // bottom right
   };
 }
 
@@ -74,6 +55,8 @@ void draw() {
 
   for (Ball ball : balls)
     ball.render();
+
+  cue.render();
 }
 
 void drawTable() {
@@ -83,7 +66,7 @@ void drawTable() {
 
   // dark green rounded rectangle: pool table
   fill(2, 113, 72);
-  rect(tableOffsetX, tableOffsetY, tableWidth, tableHeight, 5);
+  rect(tableOffset.x, tableOffset.y, tableDims.x, tableDims.y, 5);
 
   // black circles: pool pocket
   noStroke();

@@ -1,24 +1,20 @@
 public class Ball {
-  private final color color1 = color(218, 237, 71); // yellow
-  private final color color2 = color(255, 0, 0);    // red
-
-  private boolean player1;
+  private final int radius = 50;
   private PVector pos;
+  private color colr;
 
-  public Ball(boolean player1, PVector pos) {
-    this.player1 = player1;
+  public Ball(PVector pos, color colr) {
     this.pos = pos;
+    this.colr = colr;
   }
 
   void render() {
     noStroke();
+    fill(colr);
 
-    if (player1) fill(color1);
-    else         fill(color2);
-
-    circle(pos.x, pos.y, 50);
+    circle(pos.x, pos.y, radius);
   }
-
+ 
   PVector getPos() {
     return pos;
   }
@@ -27,4 +23,3 @@ public class Ball {
     this.pos = pos;
   }
 }
-
