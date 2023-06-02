@@ -1,8 +1,6 @@
 public class Cue {
-  private final int stickWidth = 10000;
-  private final int stickLength = 250;
-
   private Ball ball;
+  private float angle;
 
   public Cue(PVector tableOffset, PVector tableDims) {
     ball = new Ball(
@@ -16,11 +14,13 @@ public class Cue {
 
     stroke(232, 175, 100); // tan
     strokeWeight(16); // 16 px thick
-    PVector stick = PVector.fromAngle(0);
-    line(
-      ball.getPos().x, ball.getPos().y,
-      ball.getPos().x + stickWidth, ball.getPos().y + stickLength
-    );
+
+    PVector stickAngle = PVector.fromAngle(angle);
+    angle += 0.1;
+
+    PVector startPos = ball.getPos().copy().add(stickAngle.copy().mult(75)); // 75 px away
+    PVector endPos = ball.getPos().copy().add(stickAngle.copy().mult(300)); // 300 px long
+
+    line(startPos.x, startPos.y, endPos.x, endPos.y);
   }
 }
-
