@@ -1,6 +1,9 @@
 public class Ball {
   private final int radius = 50;
+  private final int speed = 10;
+
   private PVector pos;
+  private PVector vel = new PVector(0, 0);
   private color colr;
 
   public Ball(PVector pos, color colr) {
@@ -15,11 +18,13 @@ public class Ball {
     circle(pos.x, pos.y, radius);
   }
  
+ 
+ 
   PVector getPos() {
     return pos;
   }
 
-  void setPos(PVector pos) {
-    this.pos = pos;
+  void setVel(PVector vel) {
+    this.vel = vel;
   }
 }

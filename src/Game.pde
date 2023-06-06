@@ -51,6 +51,7 @@ void setup() {
 }
 
 void draw() {
+  background(255);
   drawTable();
 
   for (Ball ball : balls)
@@ -73,4 +74,12 @@ void drawTable() {
   fill(0);
   for (PVector pos : pockets)
     circle(pos.x, pos.y, ballRadius);
+}
+
+void mouseDragged() {
+  cue.align(mouseX, mouseY);
+}
+
+void mouseReleased() {
+  cue.shoot();
 }
