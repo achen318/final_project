@@ -1,5 +1,10 @@
 public class Cue {
   private Ball ball;
+
+  private PVector startPos;
+  private PVector endPos;
+
+  private PVector stickAngle;
   private float angle;
   private float strength;
 
@@ -16,12 +21,12 @@ public class Cue {
     stroke(232, 175, 100); // tan
     strokeWeight(16); // 16 px thick
 
-    PVector stickAngle = PVector.fromAngle(angle);
+    stickAngle = PVector.fromAngle(angle);
 
-    PVector startPos = ball.getPos().copy().add(
+    startPos = ball.getPos().copy().add(
       stickAngle.copy().mult(75 + 0.1*strength)); // 75 px away
 
-    PVector endPos = ball.getPos().copy().add(
+    endPos = ball.getPos().copy().add(
       stickAngle.copy().mult(300 + 0.1*strength)); // 300 px long
 
     line(startPos.x, startPos.y, endPos.x, endPos.y);
@@ -35,5 +40,9 @@ public class Cue {
   }
 
   void shoot() {
+    startPos.add(stickAngle.mult(10));
+    endPos.add(stickAngle.mult(10));
+
+    ball.setVel(stickAngle);
   }
 }

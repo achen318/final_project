@@ -12,13 +12,17 @@ public class Ball {
   }
 
   void render() {
+    update();
+
     noStroke();
     fill(colr);
 
     circle(pos.x, pos.y, radius);
   }
  
- 
+   void update() {
+     pos.add(vel);
+   }
  
   PVector getPos() {
     return pos;
