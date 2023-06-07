@@ -1,6 +1,5 @@
 public class Ball {
-  private final int radius = 50;
-  private final int speed = 10;
+  public static final int radius = 50;
 
   private PVector pos;
   private PVector vel = new PVector(0, 0);
@@ -20,15 +19,20 @@ public class Ball {
     circle(pos.x, pos.y, radius);
   }
  
-   void update() {
-     pos.add(vel);
+  void update() {
+    pos.add(vel);
    }
  
   PVector getPos() {
     return pos;
   }
 
+  PVector getVel() {
+    return vel;
+  }
+
   void setVel(PVector vel) {
     this.vel = vel;
   }
 }
+

@@ -19,7 +19,7 @@ void setup() {
   cue = new Cue(tableOffset, tableDims);
 
   // Initialize 15 balls
-  balls = new Ball[15];
+  balls = new Ball[16];
   int index = 0;
 
   for (int i = 0; i < 5; ++i) {
@@ -39,6 +39,8 @@ void setup() {
     }
   }
 
+  balls[index] = cue.ball;
+
   // Initialize 6 pockets
   pockets = new PVector[]{
     tableOffset.copy(),                                 // top left
@@ -51,11 +53,26 @@ void setup() {
 }
 
 void draw() {
-  background(255);
+  background(69, 138, 247);
   drawTable();
 
-  for (Ball ball : balls)
+  for (Ball ball : balls) {
     ball.render();
+
+    PVector ballPos = ball.getPos();
+    PVector ballVel = ball.getVel();
+
+    // reflect x if x is out of bound
+    if (ballPos.x < tableOffset.x + Ball.radius ||
+        ballPos.x > tableOffset.x + tableDims.x - Ball.radius )
+      ball.setVel(new PVector(-ballVel.x, ballVel.y));
+
+    // reflect y if y is out of bound
+    if (ballPos.y < tableOffset.y + Ball.radius ||
+        ballPos.y > tableOffset.y + tableDims.y - Ball.radius 
+        )
+      ball.setVel(new PVector(ballVel.x, -ballVel.y));
+  }
 
   cue.render();
 }
@@ -76,7 +93,7 @@ void drawTable() {
     circle(pos.x, pos.y, ballRadius);
 }
 
-void mouseDragged() {
+void mouseMoved() {
   cue.align(mouseX, mouseY);
 }
 

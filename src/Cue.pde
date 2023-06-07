@@ -29,7 +29,7 @@ public class Cue {
     endPos = ball.getPos().copy().add(
       stickAngle.copy().mult(300 + 0.1*strength)); // 300 px long
 
-    line(startPos.x, startPos.y, endPos.x, endPos.y);
+    //line(startPos.x, startPos.y, endPos.x, endPos.y);
   }
 
   void align(int x, int y) {
@@ -40,8 +40,8 @@ public class Cue {
   }
 
   void shoot() {
-    startPos.add(stickAngle.mult(10));
-    endPos.add(stickAngle.mult(10));
+    startPos.add(stickAngle.mult(-3));
+    endPos.add(stickAngle.mult(-3));
 
     ball.setVel(stickAngle);
   }
