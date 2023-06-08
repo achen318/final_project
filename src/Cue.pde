@@ -8,7 +8,7 @@ public class Cue {
   private float angle;
   private float strength;
 
-  public Cue(PVector tableOffset, PVector tableDims) {
+  public Cue() {
     ball = new Ball(
       tableOffset.copy().add(tableDims.x/4, tableDims.y/2),
       color(255) // black

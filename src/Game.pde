@@ -1,11 +1,14 @@
 Cue cue;
-Ball[] balls;
-PVector[] pockets;
+static Ball[] balls;
+static PVector[] pockets;
 
-PVector tableOffset;
-PVector tableDims;
+static PVector tableOffset;
+static PVector tableDims;
 
-int ballRadius;
+static float borderL;
+static float borderR;
+static float borderT;
+static float borderB;
 
 void setup() {
   size(1080, 720); // screen size
@@ -13,10 +16,14 @@ void setup() {
   // Initialize constants
   tableOffset = new PVector(width, height).mult(0.1);
   tableDims = new PVector(width, height).mult(0.8);
-  ballRadius = 48;
+
+  borderL = tableOffset.x + Ball.radius;
+  borderR = tableOffset.x + tableDims.x - Ball.radius;
+  borderT = tableOffset.y + Ball.radius;
+  borderB = tableOffset.y + tableDims.y - Ball.radius;
 
   // Initialize cue ball and stick
-  cue = new Cue(tableOffset, tableDims);
+  cue = new Cue();
 
   // Initialize 15 balls
   balls = new Ball[16];
@@ -24,18 +31,18 @@ void setup() {
 
   for (int i = 0; i < 5; ++i) {
     // the x position is held constant for each column
-    float x = tableOffset.x + 0.75 * tableDims.x + (i-2) * ballRadius;
+    float x = tableOffset.x + 0.75 * tableDims.x + (i-2) * Ball.radius;
     // this will be the starting y position of the column
-    float y = tableOffset.y + 0.5 * tableDims.y - (i/2) * ballRadius;
+    float y = tableOffset.y + 0.5 * tableDims.y - (i/2) * Ball.radius;
 
     // Adjust starting y position to stagger balls
-    if (i % 2 == 1) y -= 0.5 * ballRadius;
+    if (i % 2 == 1) y -= 0.5 * Ball.radius;
 
     // Add balls down the column
     for (int j = 0; j <= i; ++j) {
       balls[index] = new ObjectBall(new PVector(x, y), j % 2 == 0);
       ++index;
-      y += ballRadius;
+      y += Ball.radius;
     }
   }
 
@@ -56,23 +63,8 @@ void draw() {
   background(69, 138, 247);
   drawTable();
 
-  for (Ball ball : balls) {
+  for (Ball ball : balls)
     ball.render();
-
-    PVector ballPos = ball.getPos();
-    PVector ballVel = ball.getVel();
-
-    // reflect x if x is out of bound
-    if (ballPos.x < tableOffset.x + Ball.radius ||
-        ballPos.x > tableOffset.x + tableDims.x - Ball.radius )
-      ball.setVel(new PVector(-ballVel.x, ballVel.y));
-
-    // reflect y if y is out of bound
-    if (ballPos.y < tableOffset.y + Ball.radius ||
-        ballPos.y > tableOffset.y + tableDims.y - Ball.radius 
-        )
-      ball.setVel(new PVector(ballVel.x, -ballVel.y));
-  }
 
   cue.render(true);
 }
@@ -90,7 +82,7 @@ void drawTable() {
   noStroke();
   fill(0);
   for (PVector pos : pockets)
-    circle(pos.x, pos.y, ballRadius);
+    circle(pos.x, pos.y, Ball.radius);
 }
 
 void mouseMoved() {
