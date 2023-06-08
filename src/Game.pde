@@ -74,7 +74,7 @@ void draw() {
       ball.setVel(new PVector(ballVel.x, -ballVel.y));
   }
 
-  cue.render();
+  cue.render(true);
 }
 
 void drawTable() {

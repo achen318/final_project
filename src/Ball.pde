@@ -1,5 +1,6 @@
 public class Ball {
   public static final int radius = 50;
+  public static final float friction = 0.005;
 
   private PVector pos;
   private PVector vel = new PVector(0, 0);
@@ -21,6 +22,7 @@ public class Ball {
  
   void update() {
     pos.add(vel);
+    vel.sub(vel.copy().mult(friction));
    }
  
   PVector getPos() {
@@ -35,4 +37,3 @@ public class Ball {
     this.vel = vel;
   }
 }
-
