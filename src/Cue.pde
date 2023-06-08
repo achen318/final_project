@@ -19,12 +19,12 @@ public class Cue {
     ball.render();
 
     stickAngle = PVector.fromAngle(angle);
-    
-    startPos = ball.getPos().copy().add(
-      stickAngle.copy().mult(75 + 0.1*strength)); // 75 px away
 
-    endPos = ball.getPos().copy().add(
-      stickAngle.copy().mult(300 + 0.1*strength)); // 300 px long
+    startPos = PVector.add(ball.getPos(),
+      PVector.mult(stickAngle, 75 + 0.1*strength)); // 75 px away
+
+    endPos = PVector.add(ball.getPos(),
+      PVector.mult(stickAngle, 300 + 0.1*strength)); // 300 px long
 
     if (showStick)
       renderStick();

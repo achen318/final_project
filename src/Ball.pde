@@ -35,6 +35,7 @@ public class Ball {
 
     // check for collisions
     checkBorderCollision();
+    checkBallCollision();
    }
 
   void checkBorderCollision() {
@@ -46,7 +47,18 @@ public class Ball {
     if (pos.y < borderT || pos.y > borderB)
       vel = new PVector(vel.x, -vel.y);
   }
- 
+
+   void checkBallCollision() {
+     for (Ball ball : balls) {
+       if (this == ball) return;
+
+       if (PVector.sub(ball.getPos(), pos).mag() < radius) {
+         ball.setVel(vel);
+         vel.mult(-1);
+       }
+     }
+   }
+
   PVector getPos() {
     return pos;
   }

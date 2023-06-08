@@ -12,4 +12,3 @@ public class ObjectBall extends Ball {
     return player1;
   }
 }
-
