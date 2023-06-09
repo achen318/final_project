@@ -11,10 +11,7 @@ public class Cue {
   private float strength;
 
   public Cue() {
-    ball = new Ball(
-      tableOffset.copy().add(tableDims.x/4, tableDims.y/2),
-      color(255) // black
-    );
+    ball = new Ball(cuePos, color(255)); // white
   }
 
   void render(boolean showStick) {

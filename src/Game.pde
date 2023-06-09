@@ -5,6 +5,8 @@ static PVector[] pockets;
 static PVector tableOffset;
 static PVector tableDims;
 
+static PVector cuePos;
+
 static float borderL;
 static float borderR;
 static float borderT;
@@ -18,6 +20,8 @@ void setup() {
   // Initialize constants
   tableOffset = new PVector(width, height).mult(0.1);
   tableDims = new PVector(width, height).mult(0.8);
+
+  cuePos = tableOffset.copy().add(tableDims.x/4, tableDims.y/2);
 
   borderL = tableOffset.x + Ball.radius;
   borderR = tableOffset.x + tableDims.x - Ball.radius;
@@ -76,6 +80,12 @@ void draw() {
 
   if (!inMotion)
     awaitingMove = true;
+
+  PVector pos = cue.ball.pos;
+  if (awaitingMove && (
+    pos.x < borderL || pos.x > borderR ||
+    pos.y < borderT || pos.y > borderB) )
+    cue.ball.pos = cuePos;
 
   cue.render(awaitingMove);
 }
