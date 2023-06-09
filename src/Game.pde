@@ -25,35 +25,28 @@ void setup() {
   // Initialize cue ball and stick
   cue = new Cue();
 
-  balls = new Ball[2];
-  balls[0] = new ObjectBall(new PVector(
-      tableOffset.x + 0.75 * tableDims.x,
-      tableOffset.y + 0.5 * tableDims.y
-    ), true);
-  balls[1] = cue.ball;
+  // Initialize 15 balls + 1 cue ball
+  balls = new Ball[16];
+  int index = 0;
 
-  //// Initialize 15 balls
-  //balls = new Ball[16];
-  //int index = 0;
+  for (int i = 0; i < 5; ++i) {
+    // the x position is held constant for each column
+    float x = tableOffset.x + 0.75 * tableDims.x + (i-2) * Ball.radius;
+    // this will be the starting y position of the column
+    float y = tableOffset.y + 0.5 * tableDims.y - (i/2) * Ball.radius;
 
-  //for (int i = 0; i < 5; ++i) {
-  //  // the x position is held constant for each column
-  //  float x = tableOffset.x + 0.75 * tableDims.x + (i-2) * Ball.radius;
-  //  // this will be the starting y position of the column
-  //  float y = tableOffset.y + 0.5 * tableDims.y - (i/2) * Ball.radius;
+    // Adjust starting y position to stagger balls
+    if (i % 2 == 1) y -= 0.5 * Ball.radius;
 
-  //  // Adjust starting y position to stagger balls
-  //  if (i % 2 == 1) y -= 0.5 * Ball.radius;
+    // Add balls down the column
+    for (int j = 0; j <= i; ++j) {
+      balls[index] = new ObjectBall(new PVector(x, y), j % 2 == 0);
+      ++index;
+      y += Ball.radius;
+    }
+  }
 
-  //  // Add balls down the column
-  //  for (int j = 0; j <= i; ++j) {
-  //    balls[index] = new ObjectBall(new PVector(x, y), j % 2 == 0);
-  //    ++index;
-  //    y += Ball.radius;
-  //  }
-  //}
-
-  //balls[index] = cue.ball;
+  balls[index] = cue.ball;
 
   // Initialize 6 pockets
   pockets = new PVector[]{

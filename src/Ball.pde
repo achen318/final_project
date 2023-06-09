@@ -49,10 +49,14 @@ public class Ball {
   }
 
   void checkBallCollision() {
+    // god bless zameen cater for their help for this method
     for (Ball ball : balls) {
       if (this == ball) continue;
 
-      PVector diff = PVector.sub(ball.pos, pos);
+      PVector diff = PVector.sub(
+        PVector.add(pos,vel),
+        PVector.add(ball.pos,ball.vel)
+      );
 
       if (diff.mag() < radius) {
         PVector dir = diff.normalize();
