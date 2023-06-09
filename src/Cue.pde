@@ -20,10 +20,10 @@ public class Cue {
 
     stickAngle = PVector.fromAngle(angle);
 
-    startPos = PVector.add(ball.getPos(),
+    startPos = PVector.add(ball.pos,
       PVector.mult(stickAngle, 75 + 0.1*strength)); // 75 px away
 
-    endPos = PVector.add(ball.getPos(),
+    endPos = PVector.add(ball.pos,
       PVector.mult(stickAngle, 300 + 0.1*strength)); // 300 px long
 
     if (showStick)
@@ -38,7 +38,7 @@ public class Cue {
   }
 
   void align(int x, int y) {
-    PVector sub = new PVector(x, y).sub(ball.getPos());
+    PVector sub = new PVector(x, y).sub(ball.pos);
 
     angle = sub.heading();
     strength = sub.mag();
@@ -48,6 +48,6 @@ public class Cue {
     startPos.add(stickAngle.mult(-3));
     endPos.add(stickAngle.mult(-3));
 
-    ball.setVel(stickAngle);
+    ball.vel = stickAngle;
   }
 }

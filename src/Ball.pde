@@ -2,8 +2,8 @@ public class Ball {
   public static final int radius = 48;
   private static final float friction = 0.005;
 
-  private PVector pos;
-  private PVector vel = new PVector(0, 0);
+  PVector pos;
+  PVector vel = new PVector(0, 0);
   private color colr;
 
   public Ball(PVector pos, color colr) {
@@ -48,26 +48,18 @@ public class Ball {
       vel = new PVector(vel.x, -vel.y);
   }
 
-   void checkBallCollision() {
-     for (Ball ball : balls) {
-       if (this == ball) return;
+  void checkBallCollision() {
+    for (Ball ball : balls) {
+      if (this == ball) continue;
 
-       if (PVector.sub(ball.getPos(), pos).mag() < radius) {
-         ball.setVel(vel);
-         vel.mult(-1);
-       }
-     }
-   }
+      PVector diff = PVector.sub(ball.pos, pos);
 
-  PVector getPos() {
-    return pos;
-  }
-
-  PVector getVel() {
-    return vel;
-  }
-
-  void setVel(PVector vel) {
-    this.vel = vel;
+      if (diff.mag() < radius) {
+        PVector dir = diff.normalize();
+        float impulse = dir.dot(vel) - dir.dot(ball.vel);
+        vel.sub(PVector.mult(dir, impulse));
+        ball.vel.add(PVector.mult(dir, impulse));
+      }
+    }
   }
 }
