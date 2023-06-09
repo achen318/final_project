@@ -31,7 +31,7 @@ public class Ball {
     );
 
     // decrease velocity due to friction
-    vel.sub(vel.copy().mult(friction));
+    vel.mult(1-friction);
 
     // check for collisions
     checkBorderCollision();

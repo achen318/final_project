@@ -10,6 +10,8 @@ static float borderR;
 static float borderT;
 static float borderB;
 
+static boolean awaitingMove = true;
+
 void setup() {
   size(1080, 720); // screen size
 
@@ -63,10 +65,19 @@ void draw() {
   background(69, 138, 247);
   drawTable();
 
-  for (Ball ball : balls)
+  boolean inMotion = false;
+
+  for (Ball ball : balls) {
     ball.render();
 
-  cue.render(false);
+    if (ball.vel.mag() > 0.1)
+      inMotion = true;
+  }
+
+  if (!inMotion)
+    awaitingMove = true;
+
+  cue.render(awaitingMove);
 }
 
 void drawTable() {
@@ -90,5 +101,8 @@ void mouseMoved() {
 }
 
 void mouseReleased() {
-  cue.shoot();
+  if (awaitingMove) {
+    cue.shoot();
+    awaitingMove = false;
+  }
 }

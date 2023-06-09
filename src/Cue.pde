@@ -1,4 +1,6 @@
 public class Cue {
+  private static final int speed = 9;
+  
   private Ball ball;
 
   private PVector startPos;
@@ -45,9 +47,6 @@ public class Cue {
   }
 
   void shoot() {
-    startPos.add(stickAngle.mult(-3));
-    endPos.add(stickAngle.mult(-3));
-
-    ball.vel = stickAngle;
+    ball.vel = stickAngle.mult(-speed);
   }
 }
