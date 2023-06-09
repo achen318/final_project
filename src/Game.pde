@@ -5,10 +5,14 @@ static PVector[] pockets;
 static PVector tableOffset;
 static PVector tableDims;
 
+static PVector cuePos;
+
 static float borderL;
 static float borderR;
 static float borderT;
 static float borderB;
+
+static boolean awaitingMove = true;
 
 void setup() {
   size(1080, 720); // screen size
@@ -16,6 +20,8 @@ void setup() {
   // Initialize constants
   tableOffset = new PVector(width, height).mult(0.1);
   tableDims = new PVector(width, height).mult(0.8);
+
+  cuePos = tableOffset.copy().add(tableDims.x/4, tableDims.y/2);
 
   borderL = tableOffset.x + Ball.radius;
   borderR = tableOffset.x + tableDims.x - Ball.radius;
@@ -25,7 +31,7 @@ void setup() {
   // Initialize cue ball and stick
   cue = new Cue();
 
-  // Initialize 15 balls
+  // Initialize 15 balls + 1 cue ball
   balls = new Ball[16];
   int index = 0;
 
@@ -63,10 +69,25 @@ void draw() {
   background(69, 138, 247);
   drawTable();
 
-  for (Ball ball : balls)
+  boolean inMotion = false;
+
+  for (Ball ball : balls) {
     ball.render();
 
-  cue.render(true);
+    if (ball.vel.mag() > 0.1)
+      inMotion = true;
+  }
+
+  if (!inMotion)
+    awaitingMove = true;
+
+  PVector pos = cue.ball.pos;
+  if (awaitingMove && (
+    pos.x < borderL || pos.x > borderR ||
+    pos.y < borderT || pos.y > borderB) )
+    cue.ball.pos = cuePos;
+
+  cue.render(awaitingMove);
 }
 
 void drawTable() {
@@ -90,5 +111,8 @@ void mouseMoved() {
 }
 
 void mouseReleased() {
-  cue.shoot();
+  if (awaitingMove) {
+    cue.shoot();
+    awaitingMove = false;
+  }
 }

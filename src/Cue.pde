@@ -1,4 +1,6 @@
 public class Cue {
+  private static final int speed = 9;
+  
   private Ball ball;
 
   private PVector startPos;
@@ -9,22 +11,19 @@ public class Cue {
   private float strength;
 
   public Cue() {
-    ball = new Ball(
-      tableOffset.copy().add(tableDims.x/4, tableDims.y/2),
-      color(255) // black
-    );
+    ball = new Ball(cuePos, color(255)); // white
   }
 
   void render(boolean showStick) {
     ball.render();
 
     stickAngle = PVector.fromAngle(angle);
-    
-    startPos = ball.getPos().copy().add(
-      stickAngle.copy().mult(75 + 0.1*strength)); // 75 px away
 
-    endPos = ball.getPos().copy().add(
-      stickAngle.copy().mult(300 + 0.1*strength)); // 300 px long
+    startPos = PVector.add(ball.pos,
+      PVector.mult(stickAngle, 75 + 0.1*strength)); // 75 px away
+
+    endPos = PVector.add(ball.pos,
+      PVector.mult(stickAngle, 300 + 0.1*strength)); // 300 px long
 
     if (showStick)
       renderStick();
@@ -38,16 +37,13 @@ public class Cue {
   }
 
   void align(int x, int y) {
-    PVector sub = new PVector(x, y).sub(ball.getPos());
+    PVector sub = new PVector(x, y).sub(ball.pos);
 
     angle = sub.heading();
     strength = sub.mag();
   }
 
   void shoot() {
-    startPos.add(stickAngle.mult(-3));
-    endPos.add(stickAngle.mult(-3));
-
-    ball.setVel(stickAngle);
+    ball.vel = stickAngle.mult(-speed);
   }
 }
