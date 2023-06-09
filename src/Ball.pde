@@ -36,6 +36,7 @@ public class Ball {
     // check for collisions
     checkBorderCollision();
     checkBallCollision();
+    checkPocketCollision();
    }
 
   void checkBorderCollision() {
@@ -54,8 +55,8 @@ public class Ball {
       if (this == ball) continue;
 
       PVector diff = PVector.sub(
-        PVector.add(pos,vel),
-        PVector.add(ball.pos,ball.vel)
+        PVector.add(pos, vel),
+        PVector.add(ball.pos, ball.vel)
       );
 
       if (diff.mag() < radius) {
@@ -65,5 +66,11 @@ public class Ball {
         ball.vel.add(PVector.mult(dir, impulse));
       }
     }
+  }
+
+  void checkPocketCollision() {
+    for (PVector pocket : pockets)
+      if (PVector.sub(pos, pocket).mag() < 1.5*radius)
+        pos = new PVector(-tableDims.x, -tableDims.y);
   }
 }
